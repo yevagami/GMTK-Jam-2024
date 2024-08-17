@@ -6,7 +6,19 @@ public class BlockScript : MonoBehaviour {
     //Position in the set array
     public int x;
     public int y;
-       
+    
+    //A dictionary of connections
+    public Dictionary<string, BlockScript> connections = new Dictionary<string, BlockScript>();
+
+    //A dictionary of their directions
+    public Dictionary<string, Vector3> directions = new Dictionary<string, Vector3>(){
+        {"up", Vector3.up },
+        {"down", Vector3.down },
+        {"left", Vector3.left },
+        {"right", Vector3.right }
+    };
+
+
     //Connections to other blocks
     public BlockScript up;
     public BlockScript down;
@@ -24,16 +36,45 @@ public class BlockScript : MonoBehaviour {
             h = boxCollider.size.y;
         }
     }
+    
+    //Methods for connecting blocks
+    public void ConnectUp(BlockScript objectAbove) {
+        if (!connections.TryAdd("up", objectAbove)) {
+            connections["up"] = objectAbove;
+        };
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        if (!objectAbove.connections.TryAdd("down", this)) {
+            objectAbove.connections["down"] = this;
+        };
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void ConnectDown(BlockScript objectBelow) {
+        if (!connections.TryAdd("down", objectBelow)) {
+            connections["down"] = objectBelow;
+        };
+
+        if (!objectBelow.connections.TryAdd("up", this)) {
+            objectBelow.connections["up"] = this;
+        };
+    }
+
+    public void ConnectLeft(BlockScript leftObject) {
+        if (!connections.TryAdd("left", leftObject)) {
+            connections["left"] = leftObject;
+        };
+
+        if (!leftObject.connections.TryAdd("right", this)) {
+            leftObject.connections["right"] = this;
+        };
+    }
+
+    public void ConnectRight(BlockScript rightObject) {
+        if (!connections.TryAdd("right", rightObject)) {
+            connections["right"] = rightObject;
+        };
+
+        if (!rightObject.connections.TryAdd("left", this)) {
+            rightObject.connections["left"] = this;
+        };
     }
 }

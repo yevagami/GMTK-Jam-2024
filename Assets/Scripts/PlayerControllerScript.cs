@@ -20,6 +20,10 @@ public class PlayerControllerScript : MonoBehaviour
     Rigidbody2D currentPawnRB;
     [SerializeField] GameObject defaultPawn;
 
+    //Detach, Attach, MoveStates
+    enum states { Move, Detach, Attach}
+    states currentState = states.Move;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +42,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     //Physics related stuff
     private void FixedUpdate() {
+
         if(currentPawn != null) {
             currentPawnRB.velocity = moveInput * moveSpeed;
         }
@@ -53,5 +58,9 @@ public class PlayerControllerScript : MonoBehaviour
             return;
         }
         currentPawn = newPawn;
+    }
+
+    public void DetachMode() {
+
     }
 }
