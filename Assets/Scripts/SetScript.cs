@@ -7,87 +7,107 @@ using UnityEngine.Rendering;
 
 public class SetScript : MonoBehaviour{
     //Blocks
-    List<BlockScript> blocks = new List<BlockScript>();
-    BlockScript pivot;
+    BlockScript[,] blocks;
+    Dictionary<BlockScript, BlockScript[]> blockScripts; //Map of connections
     public float spaceBetweenBlocks = 0.3f;
-    bool sort = false;
-    GameObject blockPrefab;
+    public GameObject blockPrefab;
+    int setWidth;
+    int setHeight;  
 
     // Start is called before the first frame update
     void Start()
     {
-        GetBlocksFromChildren();
-      
+        GenerateSet(4, 4);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!sort) {
-            AdjustBlockPositions();
-            sort = true;    
-        }
+        AdjustBlockPositions();
     }
 
     //Adding the child blocks into the blocks vector
     public void AdjustBlockPositions() {
+
+        //The pivot will always be the first block
+        BlockScript pivot = blocks[0,0];
+        pivot.transform.position = Vector3.zero;
+
+
         foreach (BlockScript block in blocks) {
+            if (block == pivot) {
+                continue;
+            };
+
             //up
             if (block.up != null) {
-                block.gameObject.transform.position = block.up.gameObject.transform.position - new Vector3(0.0f, block.up.h/2 + spaceBetweenBlocks, 0.0f); 
+                block.up.transform.position = block.transform.position + new Vector3(0.0f, block.h/2 + spaceBetweenBlocks, 0.0f); 
             }
 
             //Down
             if (block.down != null) {
-                block.gameObject.transform.position = block.down.gameObject.transform.position + new Vector3(0.0f, block.down.h / 2 + spaceBetweenBlocks, 0.0f);
+                block.down.transform.position = block.transform.position - new Vector3(0.0f, block.h / 2 + spaceBetweenBlocks, 0.0f);
             }
 
             //Left
             if (block.left != null) {
-                block.gameObject.transform.position = block.left.gameObject.transform.position + new Vector3(block.left.w / 2 + spaceBetweenBlocks, 0.0f, 0.0f);
+                block.left.transform.position = block.gameObject.transform.position - new Vector3(block.w / 2 + spaceBetweenBlocks, 0.0f, 0.0f);
             }
 
             //Right
             if(block.right != null) {
-                block.gameObject.transform.position = block.right.gameObject.transform.position - new Vector3(block.right.w / 2 + spaceBetweenBlocks, 0.0f, 0.0f);
+                block.right.transform.position = block.gameObject.transform.position + new Vector3(block.w / 2 + spaceBetweenBlocks, 0.0f, 0.0f);
             }
-            Debug.Log(string.Format("{0} Pos: {1}", block.gameObject.name, transform.position));
         }
     }
 
-    //Retrieving all the blocks from the children
-    public void GetBlocksFromChildren() {
-        int childrenCount = transform.childCount;
-        for(int i = 0; i < childrenCount; i++) {
-            BlockScript child = transform.GetChild(i).GetComponent<BlockScript>();
-            if(child == null) {
-                Debug.Log("Not a valid block");
-                continue;
-            }
-            blocks.Add(child);
-        }
-    }
-
-    public void GenerateBlocks(int width, int height) {
+    public void GenerateSet(int width, int height) {
         if(blockPrefab == null) {
             Debug.Log("blockPrefab not set");
             return; 
         }
 
-        for(int i = 0; i < width; i++) {
-            for(int j = 0; j < height; j++) {
+        //Creating the set dimensions
+        setWidth = width;
+        setHeight = height;
 
+        //Creating the blocks
+        blocks = new BlockScript[width, height];
+        for(int j = 0; j < height; j++) {
+            for(int i = 0; i < width; i++) {
                 BlockScript newBlock = Instantiate(blockPrefab).GetComponent<BlockScript>();
-                blocks.Add(newBlock);
-
-                if (i != 0 && i % width != 0) {
-                    newBlock.left = blocks[i - 1];
-                }
-
-                if(j != 0) {
-                    newBlock.up = blocks[i + (j - 1)];
-                }
+                newBlock.transform.parent = transform;
+                newBlock.gameObject.name = string.Format("{0} {1}", "Block", i + j * width);
+                blocks[i,j] = newBlock;
+                newBlock.x = i;
+                newBlock.y = j;
             } 
+        }
+
+        //Attaching the blocks to one another
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                //Left
+                if(i - 1 >= 0) {
+                    blocks[i, j].left = blocks[i - 1, j];
+                }
+
+                //Right
+                if(i + 1 < width) {
+                    blocks[i,j].right = blocks[i + 1, j];
+                }
+
+                //Up
+                if(j - 1 >= 0) {
+                    blocks[i, j].up = blocks[i, j - 1];
+                }
+
+                //Down
+                if(j + 1 < height) {
+                    blocks[i, j].down = blocks[i, j + 1];
+                }
+            }
         }
     }
 }

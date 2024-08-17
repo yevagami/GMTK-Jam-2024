@@ -149,5 +149,5 @@ MonoBehaviour:
   down: {fileID: 0}
   left: {fileID: 0}
   right: {fileID: 0}
-  w: 0
-  h: 0
+  w: 0.32
+  h: 0.32
