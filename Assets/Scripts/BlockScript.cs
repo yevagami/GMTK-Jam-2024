@@ -77,4 +77,45 @@ public class BlockScript : MonoBehaviour {
             rightObject.connections["left"] = this;
         };
     }
+
+    //Methods for disconnecting blocks
+    public void DisconnectLeft() {
+        BlockScript leftObject;
+        if (connections.TryGetValue("left", out leftObject)){
+            leftObject.connections["right"] = null;
+            connections["left"] = null;
+            return;
+        }
+        return;
+    }
+
+    public void DisconnectRight() {
+        BlockScript rightObject;
+        if (connections.TryGetValue("right", out rightObject)) {
+            rightObject.connections["left"] = null;
+            connections["right"] = null;
+            return;
+        }
+        return;
+    }
+
+    public void DisconnectUp() {
+        BlockScript upObject;
+        if (connections.TryGetValue("up", out upObject)) {
+            upObject.connections["down"] = null;
+            connections["up"] = null;
+            return;
+        }
+        return;
+    }
+
+    public void DisconnectDown() {
+        BlockScript downObject;
+        if (connections.TryGetValue("down", out downObject)) {
+            downObject.connections["up"] = null;
+            connections["down"] = null;
+            return;
+        }
+        return;
+    }
 }
