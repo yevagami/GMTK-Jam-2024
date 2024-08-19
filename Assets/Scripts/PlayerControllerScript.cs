@@ -370,8 +370,6 @@ public class PlayerControllerScript : MonoBehaviour
             newSet.blocks.Add(blockMap.Key);
         }
 
-        newSetObject.transform.position = newSet.blocks[0].transform.position;
-
         //Parenting them to the new set
         foreach (BlockScript block in newSet.blocks) {
             block.transform.SetParent(newSetObject.transform);

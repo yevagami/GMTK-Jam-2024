@@ -261,8 +261,7 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   cameraDampTime: 0.1
   moveSpeed: 2
-  jumpSpeed: 5
-  isJumping: 0
+  jumpSpeed: 20
   defaultPawn: {fileID: 1729405769}
   inputDelayTime: 0.08
   setPrefab: {fileID: 5352526263116408235, guid: 55a4493ad69896f4c96aa4fc10011cdf, type: 3}

@@ -41,8 +41,6 @@ public class SetScript : MonoBehaviour{
 
         //The pivot will always be the first block
         BlockScript pivot = blocks[0];
-        pivot.transform.localPosition = Vector3.zero;
-
 
         if (blocks.Count <= 1) {
             Debug.Log("There are only 1 bloks");    
@@ -101,8 +99,10 @@ public class SetScript : MonoBehaviour{
         float lowestYPos = 0.0f;
         foreach(BlockScript b in blocks) {
             if(b.transform.localPosition.y < lowestYPos) {
+                lowestYPos = b.transform.localPosition.y;
                 legs.Clear();
                 legs.Add(b);
+                continue;
             }
 
             if(b.transform.localPosition.y == lowestYPos) {
