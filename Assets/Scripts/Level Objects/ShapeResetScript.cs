@@ -20,7 +20,29 @@ public class ShapeResetScript : MonoBehaviour{
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if(respawnPos == null) {
+            return;
+        }
+
+        if(levelManager == null) {
+            return;
+        }
+
         if(collision.gameObject.tag == "block") {
+            SetScript set = collision.gameObject.transform.parent.gameObject.GetComponent<SetScript>();
+            if (set == null) {
+                return;
+            }
+
+            foreach(SetScript s in levelManager.setsInLevel) {
+                if(s != set) {
+                    Destroy(s.gameObject);
+                }
+            }
+
+            set.DeleteBlocks();
+            set.GenerateSet(3, 3);
+            set.transform.position = respawnPos.transform.position;
         }
     }
 }

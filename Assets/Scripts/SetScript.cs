@@ -98,7 +98,7 @@ public class SetScript : MonoBehaviour{
 
     public void SetLegs() {
         legs.Clear();
-        float lowestYPos = 0.0f;
+        float lowestYPos = float.PositiveInfinity;
         foreach(BlockScript b in blocks) {
             if(b.transform.localPosition.y < lowestYPos) {
                 lowestYPos = b.transform.localPosition.y;
@@ -113,10 +113,18 @@ public class SetScript : MonoBehaviour{
         }
     }
 
+    public void DeleteBlocks() {
+        foreach(BlockScript b in blocks) {
+            Destroy(b.gameObject);
+        }
+        blocks.Clear();
+    }
+
     //Ground check checks for objects with the tag "floor"
     void GroundCheck() {
         IsGrounded = false;
         foreach (BlockScript b in legs) {
+            if(b == null) { continue; }
             RaycastHit2D[] hit = Physics2D.RaycastAll(b.transform.position - new Vector3(0.0f, b.w/2 + 0.0001f, 0.0f), Vector2.down, groundCheckDistance);
             
             foreach(RaycastHit2D h in hit) {

@@ -138,7 +138,7 @@ public class PlayerControllerScript : MonoBehaviour
         switch (currentState) {
             case states.Move:
                 if (currentPawn != null && moveInput.magnitude > 0.0f) {         
-                    currentPawnRB.velocity = new Vector2(moveInput.x * moveSpeed, 0.0f);
+                    currentPawnRB.velocity = new Vector2(moveInput.x * moveSpeed, currentPawnRB.velocity.y);
                 }
 
                 if (currentSet.IsGrounded) {
