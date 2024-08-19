@@ -105,7 +105,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     //Physics related stuff
     private void FixedUpdate() {
-        playerCamera.transform.position = Vector3.SmoothDamp(playerCamera.transform.position, currentPawn.transform.position, ref cameraMoveSpeed, cameraDampTime);
+        //playerCamera.transform.position = Vector3.SmoothDamp(playerCamera.transform.position, currentPawn.transform.position, ref cameraMoveSpeed, cameraDampTime);
 
         switch (currentState) {
             case states.Move:
@@ -377,6 +377,8 @@ public class PlayerControllerScript : MonoBehaviour
         }
 
         //Cleanup
+        currentSet.AdjustBlockPositions();
+        newSet.AdjustBlockPositions();
         detachHead.GetComponent<SpriteRenderer>().color = Color.white;
         detachHead = null;
         currentPivot = null;

@@ -1,13 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Xml;
-using TMPro;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.Rendering;
 
 public class SetScript : MonoBehaviour{
     //Blocks
@@ -15,6 +7,11 @@ public class SetScript : MonoBehaviour{
     public float spaceBetweenBlocks = 0.3f;
     public GameObject blockPrefab;
     public bool generateNewSet = false;
+
+    //Legs
+    //Legs are the very bottom of the blocks. They are used to check if the block is touching the ground
+    List<BlockScript> legs = new();
+    public bool IsGrounded = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +22,7 @@ public class SetScript : MonoBehaviour{
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update(){
         AdjustBlockPositions();
     }
 
@@ -87,35 +83,9 @@ public class SetScript : MonoBehaviour{
                     newBlock.ConnectUp(blocks[(i + j * width) - width]);
                 }
                 
-
-                //newBlock.x = i;
-                //newBlock.y = j;
             } 
         }
-
-        ////Attaching the blocks to one another
-        //for (int j = 0; j < height; j++) {
-        //    for (int i = 0; i < width; i++) {
-        //        //Left
-        //        if(i - 1 >= 0) {
-        //            blocks[i, j].left = blocks[i - 1, j];
-        //        }
-
-        //        //Right
-        //        if(i + 1 < width) {
-        //            blocks[i,j].right = blocks[i + 1, j];
-        //        }
-
-        //        //Up
-        //        if(j - 1 >= 0) {
-        //            blocks[i, j].up = blocks[i, j - 1];
-        //        }
-
-        //        //Down
-        //        if(j + 1 < height) {
-        //            blocks[i, j].down = blocks[i, j + 1];
-        //        }
-        //    }
-        //}
     }
+
+    void GroundCheck() { }
 }

@@ -45,10 +45,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -75,3 +75,4 @@ MonoBehaviour:
   blocks: []
   spaceBetweenBlocks: 0.3
   blockPrefab: {fileID: 5537081442561300023, guid: d227da356275a7c43820f3f35154089e, type: 3}
+  generateNewSet: 0
