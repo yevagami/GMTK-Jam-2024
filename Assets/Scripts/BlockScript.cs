@@ -36,8 +36,7 @@ public class BlockScript : MonoBehaviour {
             Debug.DrawLine(transform.position + offset, c.Value.transform.position + offset, lineColor);
         }
     }
-
-    [Header("")]    
+  
     //A dictionary of connections
     public Dictionary<string, BlockScript> connections = new Dictionary<string, BlockScript>();
 
@@ -50,6 +49,7 @@ public class BlockScript : MonoBehaviour {
     };
 
     //How big the blocks are
+    [Header("Dimensions")]
     public float w;
     public float h;
 

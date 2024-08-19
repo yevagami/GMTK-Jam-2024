@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SetScript : MonoBehaviour{
     //Blocks
+    [Header("Blocks")]
     public List<BlockScript>blocks = new List<BlockScript>(); //Map of connections
     public float spaceBetweenBlocks = 0.3f;
     public GameObject blockPrefab;
@@ -10,6 +11,7 @@ public class SetScript : MonoBehaviour{
 
     //Legs
     //Legs are the very bottom of the blocks. They are used to check if the block is touching the ground
+    [Header("Ground Check")]
     List<BlockScript> legs = new();
     public bool IsGrounded = false;
     public float groundCheckDistance = 0.8f;
@@ -18,7 +20,7 @@ public class SetScript : MonoBehaviour{
     void Start()
     {
         if(generateNewSet) {
-            GenerateSet(4, 2);
+            GenerateSet(3,3);
         }
     }
 

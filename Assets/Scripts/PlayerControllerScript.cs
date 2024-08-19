@@ -9,16 +9,23 @@ public class PlayerControllerScript : MonoBehaviour
     //Input
     Vector2 moveInput;
 
+    //Level Manager
+    [Header("Level Manager")]
+    public LevelManager levelManager;
+
     //Camera
+    [Header("Camera Movement (Probably unused)")]
     public Camera playerCamera;
     public float cameraDampTime;
     Vector3 cameraMoveSpeed;
 
     //Movement
+    [Header("Movement")]
     public float moveSpeed;
     public float jumpSpeed;
 
     //Pawn possesion
+    [Header("Pawn")]
     GameObject currentPawn;
     Rigidbody2D currentPawnRB;
     [SerializeField] GameObject defaultPawn;
@@ -26,10 +33,12 @@ public class PlayerControllerScript : MonoBehaviour
     //Detach, Attach, MoveStates
     enum states { Move, SelectPivot, SelectDetach, Detach, Attach}
     states currentState = states.Move;
+    [Header("Player States")]
     public float inputDelayTime = 0.5f;
     Coroutine selectPivotInput = null;
 
     //Set management
+    [Header("Set")]
     public GameObject setPrefab;
     BlockScript currentPivot = null;
     SetScript currentSet = null;
@@ -43,9 +52,17 @@ public class PlayerControllerScript : MonoBehaviour
     void Start()
     {
         Possess(defaultPawn);
+
         if(playerCamera == null) {
             playerCamera = Camera.main;
         }
+
+        if(levelManager == null) {
+            levelManager = GameObject.FindGameObjectWithTag("levelManager").GetComponent<LevelManager>();
+        }
+
+        //Adding the default pawn to the level
+        levelManager.setsInLevel.Add(defaultPawn.GetComponent<SetScript>());
     }
 
     // Update is called once per frame
@@ -77,6 +94,18 @@ public class PlayerControllerScript : MonoBehaviour
                     currentState = states.Detach;
                     break;
             }
+        }
+
+        //R inputs
+        if (Input.GetKeyUp(KeyCode.R)) {
+            if(levelManager != null) {
+                levelManager.ResetLevel();
+            }
+        }
+
+        //Mouse input
+        if(Input.GetMouseButtonUp(1)) {
+            SelectSet();
         }
 
         //States update
@@ -391,6 +420,7 @@ public class PlayerControllerScript : MonoBehaviour
         newSet.AdjustBlockPositions();
         currentSet.SetLegs();
         newSet.SetLegs();
+        if (levelManager != null) { levelManager.setsInLevel.Add(newSet); }
 
         detachHead.GetComponent<SpriteRenderer>().color = Color.white;
         detachHead = null;
@@ -401,7 +431,22 @@ public class PlayerControllerScript : MonoBehaviour
         Possess(newSetObject);
     }
 
-    public void DetachMode() {
 
+
+    void SelectSet() {
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 mouseWorldPoint = playerCamera.ScreenToWorldPoint(mousePos);
+        RaycastHit2D hit = Physics2D.Raycast(mouseWorldPoint, Vector2.zero);
+
+        if(hit.collider != null) {
+            GameObject parent = hit.collider.transform.parent.gameObject;
+            SetScript parentSet = parent.GetComponent<SetScript>();
+
+            Debug.Log(parentSet.name);
+
+            if(parentSet != currentSet) {
+                Possess(parentSet.gameObject);
+            }
+        }
     }
 }
