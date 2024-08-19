@@ -39,11 +39,11 @@ public class SetScript : MonoBehaviour{
 
         //The pivot will always be the first block
         BlockScript pivot = blocks[0];
-        pivot.transform.position = Vector3.zero;
+        pivot.transform.localPosition = Vector3.zero;
 
 
         if (blocks.Count <= 1) {
-            Debug.Log("There are only 1 bloks");
+            Debug.Log("There are only 1 bloks");    
             return;
         }
 

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class PlayerControllerScript : MonoBehaviour
 {
@@ -21,13 +23,20 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField] GameObject defaultPawn;
 
     //Detach, Attach, MoveStates
-    enum states { Move, SelectPivot ,Detach, Attach}
+    enum states { Move, SelectPivot, SelectDetach, Detach, Attach}
     states currentState = states.Move;
+    public float inputDelayTime = 0.5f;
+    Coroutine selectPivotInput = null;
 
     //Set management
     public GameObject setPrefab;
     BlockScript currentPivot = null;
     SetScript currentSet = null;
+
+    //Detaching
+    Dictionary<BlockScript, BlockScript> selectedBlocksToDetach = new Dictionary<BlockScript, BlockScript>();
+    Coroutine selectDetachInput = null;
+    BlockScript detachHead = null;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +52,8 @@ public class PlayerControllerScript : MonoBehaviour
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
 
+
+        //J Inputs       
         if(Input.GetKeyUp(KeyCode.J)) {
             switch (currentState) {
                 case states.Move:
@@ -52,27 +63,43 @@ public class PlayerControllerScript : MonoBehaviour
                     break;
 
                 case states.SelectPivot:
-                    currentState = states.Detach;
+                    currentState = states.SelectDetach;
+                    DetachInit();
                     Debug.Log("Pivot confirmed, select blocks");
                     break;
 
                 case states.Detach:
-                    currentState = states.Move;
+                    Debug.Log("Detached");
+                    break;
+
+                case states.SelectDetach:
+                    currentState = states.Detach;
                     break;
             }
         }
 
+        //States update
         switch (currentState) {
             case states.SelectPivot:
-                SelectPivot();
+                if(selectPivotInput == null) {
+                    selectPivotInput = StartCoroutine(SelectPivotInputCoroutine());
+                }
+                
                 break;
+
+
+            case states.SelectDetach:
+                if (selectDetachInput == null) {
+                    selectDetachInput = StartCoroutine(SelectDetachInputCoroutine());
+                }
+                break;
+
 
             case states.Detach:
                 DetachEnd();
+                currentState = states.Move;
                 break;
         }
-
-
     }
 
 
@@ -100,8 +127,16 @@ public class PlayerControllerScript : MonoBehaviour
     }
 
     //Moving the pivot
+    //Delaying the result of the input because it's causing a not so good experience
+    IEnumerator SelectPivotInputCoroutine() {
+        yield return new WaitForSeconds(inputDelayTime);
+        SelectPivot();
+        selectPivotInput = null;
+    }
+
     void SelectPivotInit() {
         currentSet = currentPawn.GetComponent<SetScript>();
+
         if (currentSet == null) {
             currentState = states.Move;
             Debug.Log("Pawn is not a set");
@@ -157,36 +192,196 @@ public class PlayerControllerScript : MonoBehaviour
     }
 
 
+
     //Detaching from the main set
+    void DetachInit() {
+        selectedBlocksToDetach.Add(currentPivot, null);
+        detachHead = currentPivot;
+    }
+
+    IEnumerator SelectDetachInputCoroutine() {
+        yield return new WaitForSeconds(inputDelayTime);
+        SelectDetach();
+        selectDetachInput = null;
+    }
+
+    void SelectDetach() {
+        //Selecting blocks to detach
+        //Check if the move is valid
+        //if the block has already been selected/unselect it
+        //Set that current block as the head
+        if(detachHead != null) {
+            detachHead.GetComponent<SpriteRenderer>().color = Color.green;
+        }
+
+        //Right
+        if (moveInput.x == 1) {
+            BlockScript right;
+            //This move is valid
+            if (detachHead.connections.TryGetValue("right", out right)) {
+                
+                //Check if it's not in the map
+                if (selectedBlocksToDetach.TryAdd(right, detachHead)) {
+                    detachHead.GetComponent<SpriteRenderer>().color = Color.red;
+                    right.GetComponent<SpriteRenderer>().color = Color.red;
+                    detachHead = right;
+                } 
+
+                //If it's in the map
+                // & That specific block has a connection to the head
+                //Set that as the head
+                else {
+                    if(selectedBlocksToDetach.ContainsKey(detachHead)) {
+                        if (selectedBlocksToDetach[detachHead] == right) {
+                            detachHead.GetComponent<SpriteRenderer>().color = Color.white;
+                            selectedBlocksToDetach.Remove(detachHead);
+                            detachHead = right;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //Left
+        if (moveInput.x == -1) {
+            BlockScript left;
+            if (detachHead.connections.TryGetValue("left", out left)) {
+
+                if (selectedBlocksToDetach.TryAdd(left, detachHead)) {
+                    detachHead.GetComponent<SpriteRenderer>().color = Color.red;
+                    left.GetComponent<SpriteRenderer>().color = Color.red;
+                    detachHead = left;
+                } 
+                
+                else {
+                    if (selectedBlocksToDetach.ContainsKey(detachHead)) {
+                        if (selectedBlocksToDetach[detachHead] == left) {
+                            detachHead.GetComponent<SpriteRenderer>().color = Color.white;
+                            selectedBlocksToDetach.Remove(detachHead);
+                            detachHead = left;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //Up
+        if (moveInput.y == 1) {
+            BlockScript up;
+            if (detachHead.connections.TryGetValue("up", out up)) {
+
+                if (selectedBlocksToDetach.TryAdd(up, detachHead)) {
+                    detachHead.GetComponent<SpriteRenderer>().color = Color.red;
+                    up.GetComponent<SpriteRenderer>().color = Color.red;
+                    detachHead = up;
+                } 
+                
+                else {
+
+                    if (selectedBlocksToDetach.ContainsKey(detachHead)) {
+                        if (selectedBlocksToDetach[detachHead] == up) {
+                            detachHead.GetComponent<SpriteRenderer>().color = Color.white;
+                            selectedBlocksToDetach.Remove(detachHead);
+                            detachHead = up;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        //Down
+        if (moveInput.y == -1) {
+            BlockScript down;
+            if (detachHead.connections.TryGetValue("down", out down)) {
+
+                if (selectedBlocksToDetach.TryAdd(down, detachHead)) {
+                    detachHead.GetComponent<SpriteRenderer>().color = Color.red;
+                    down.GetComponent<SpriteRenderer>().color = Color.red;
+                    detachHead = down;
+                } 
+                
+                else {
+                    if (selectedBlocksToDetach.ContainsKey(detachHead)) {
+                        if (selectedBlocksToDetach[detachHead] == down) {
+                            detachHead.GetComponent<SpriteRenderer>().color = Color.white;
+                            selectedBlocksToDetach.Remove(detachHead);
+                            detachHead = down;
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
     void DetachEnd() {
+        //Creating a new set
         GameObject newSetObject = Instantiate(setPrefab);
-        SetScript newSet = newSetObject.AddComponent<SetScript>();
-        newSet.blocks.Add(currentPivot);
-        currentPivot.transform.SetParent(newSet.transform);
+        SetScript newSet = newSetObject.GetComponent<SetScript>();
 
-        //Removing all the connections
-        BlockScript currentConnection;
-        if (currentPivot.connections.TryGetValue("up", out currentConnection)){
-            currentPivot.DisconnectUp();
+        //Disconnecting the blocks' connections to the previous set
+        foreach(KeyValuePair<BlockScript, BlockScript> blockMap in selectedBlocksToDetach) {
+            BlockScript currentConnection;
+
+            //If that block is not in the map
+            //Disconnect
+            if (blockMap.Key.connections.TryGetValue("up", out currentConnection)) {
+                if(!selectedBlocksToDetach.ContainsKey(currentConnection)) {
+                    blockMap.Key.DisconnectUp();
+                }
+            }
+
+            if (blockMap.Key.connections.TryGetValue("down", out currentConnection)) {
+                if (!selectedBlocksToDetach.ContainsKey(currentConnection)) {
+                    blockMap.Key.DisconnectDown();
+                }
+            }
+
+            if (blockMap.Key.connections.TryGetValue("left", out currentConnection)) {
+                if (!selectedBlocksToDetach.ContainsKey(currentConnection)) {
+                    blockMap.Key.DisconnectLeft();
+                }
+            }
+
+            if (blockMap.Key.connections.TryGetValue("right", out currentConnection)) {
+                if (!selectedBlocksToDetach.ContainsKey(currentConnection)) {
+                    blockMap.Key.DisconnectRight();
+                }
+            }
         }
 
-        if (currentPivot.connections.TryGetValue("down", out currentConnection)) {
-            currentPivot.DisconnectDown();
+        //Adding the selected blocks to the new set
+        foreach (KeyValuePair<BlockScript, BlockScript> blockMap in selectedBlocksToDetach) {
+            newSet.blocks.Add(blockMap.Key);
         }
 
-        if (currentPivot.connections.TryGetValue("left", out currentConnection)) {
-            currentPivot.DisconnectLeft();
+        newSetObject.transform.position = newSet.blocks[0].transform.position;
+
+        //Parenting them to the new set
+        foreach (BlockScript block in newSet.blocks) {
+            block.transform.SetParent(newSetObject.transform);
+            block.GetComponent<SpriteRenderer>().color = Color.white;
         }
 
-        if (currentPivot.connections.TryGetValue("right", out currentConnection)) {
-            currentPivot.DisconnectRight();
+        //Removing the blocks from the old set
+        for(int i = 0; i < currentSet.blocks.Count; i++) {
+            if (selectedBlocksToDetach.ContainsKey(currentSet.blocks[i])) {
+                currentSet.blocks.RemoveAt(i);
+            }
         }
 
-        //Removing the block from the block list
-        currentSet.blocks.Remove(currentPivot);
-
+        //Cleanup
+        detachHead.GetComponent<SpriteRenderer>().color = Color.white;
+        detachHead = null;
         currentPivot = null;
         currentSet = null;
+        selectedBlocksToDetach.Clear();
 
         Possess(newSetObject);
     }

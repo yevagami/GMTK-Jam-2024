@@ -3,6 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockScript : MonoBehaviour {
+    [Header("DEBUGGING")]
+    //DEBUG CONNECTIONS ARRAY
+    public BlockScript[] DEBUGCONNECTIONS = new BlockScript[4];
+
+    void DRAWCONNECTIONS() {
+        foreach(KeyValuePair<string, BlockScript> c in connections) {
+            if(c.Value == null) {
+                continue;
+            }
+            Color lineColor = Color.black;
+            Vector3 offset = Vector3.zero;
+
+            if (c.Key == "up") {
+                lineColor = Color.green;
+                offset = new Vector3(-1.0f, 0.0f, 0.0f);
+            }
+            if (c.Key == "down") {
+                lineColor = Color.red;
+                offset = new Vector3(1.0f, 0.0f, 0.0f);
+            }
+            if (c.Key == "left") {
+                lineColor = Color.blue;
+                offset = new Vector3(0.0f, 1.0f, 0.0f);
+            }
+            if (c.Key == "right") {
+                lineColor = Color.yellow;
+                offset = new Vector3(0.0f, -1.0f, 0.0f);
+            }
+
+            offset *= 0.08f;
+            Debug.DrawLine(transform.position + offset, c.Value.transform.position + offset, lineColor);
+        }
+    }
+
+    [Header("")]
     //Position in the set array
     public int x;
     public int y;
@@ -18,13 +53,6 @@ public class BlockScript : MonoBehaviour {
         {"right", Vector3.right }
     };
 
-
-    //Connections to other blocks
-    public BlockScript up;
-    public BlockScript down;
-    public BlockScript left;
-    public BlockScript right;
-
     //How big the blocks are
     public float w;
     public float h;
@@ -36,7 +64,26 @@ public class BlockScript : MonoBehaviour {
             h = boxCollider.size.y;
         }
     }
-    
+
+    //FOR DEBUGGING ONLY
+    private void FixedUpdate() {
+        BlockScript foundConnections;
+        connections.TryGetValue("up", out foundConnections);
+        DEBUGCONNECTIONS[0] = foundConnections;
+
+        connections.TryGetValue("down", out foundConnections);
+        DEBUGCONNECTIONS[1] = foundConnections;
+
+        connections.TryGetValue("left", out foundConnections);
+        DEBUGCONNECTIONS[2] = foundConnections;
+
+        connections.TryGetValue("right", out foundConnections);
+        DEBUGCONNECTIONS[3] = foundConnections;
+
+        DRAWCONNECTIONS();
+    }
+
+
     //Methods for connecting blocks
     public void ConnectUp(BlockScript objectAbove) {
         if (!connections.TryAdd("up", objectAbove)) {
@@ -82,8 +129,8 @@ public class BlockScript : MonoBehaviour {
     public void DisconnectLeft() {
         BlockScript leftObject;
         if (connections.TryGetValue("left", out leftObject)){
-            leftObject.connections["right"] = null;
-            connections["left"] = null;
+            leftObject.connections.Remove("right");
+            connections.Remove("left");
             return;
         }
         return;
@@ -92,8 +139,8 @@ public class BlockScript : MonoBehaviour {
     public void DisconnectRight() {
         BlockScript rightObject;
         if (connections.TryGetValue("right", out rightObject)) {
-            rightObject.connections["left"] = null;
-            connections["right"] = null;
+            rightObject.connections.Remove("left");
+            connections.Remove("right");
             return;
         }
         return;
@@ -102,8 +149,8 @@ public class BlockScript : MonoBehaviour {
     public void DisconnectUp() {
         BlockScript upObject;
         if (connections.TryGetValue("up", out upObject)) {
-            upObject.connections["down"] = null;
-            connections["up"] = null;
+            upObject.connections.Remove("down");
+            connections.Remove("up");
             return;
         }
         return;
@@ -112,8 +159,8 @@ public class BlockScript : MonoBehaviour {
     public void DisconnectDown() {
         BlockScript downObject;
         if (connections.TryGetValue("down", out downObject)) {
-            downObject.connections["up"] = null;
-            connections["down"] = null;
+            downObject.connections.Remove("up");
+            connections.Remove("down");
             return;
         }
         return;

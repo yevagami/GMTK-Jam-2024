@@ -262,6 +262,7 @@ MonoBehaviour:
   cameraDampTime: 0.1
   moveSpeed: 3
   defaultPawn: {fileID: 1729405769}
+  inputDelayTime: 0.08
   setPrefab: {fileID: 5352526263116408235, guid: 55a4493ad69896f4c96aa4fc10011cdf, type: 3}
 --- !u!1 &491130503
 GameObject:
