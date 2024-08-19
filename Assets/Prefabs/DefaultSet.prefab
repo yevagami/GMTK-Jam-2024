@@ -76,3 +76,5 @@ MonoBehaviour:
   spaceBetweenBlocks: 0.3
   blockPrefab: {fileID: 5537081442561300023, guid: d227da356275a7c43820f3f35154089e, type: 3}
   generateNewSet: 1
+  IsGrounded: 0
+  groundCheckDistance: 0.05

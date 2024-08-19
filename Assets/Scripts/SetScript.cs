@@ -12,6 +12,7 @@ public class SetScript : MonoBehaviour{
     //Legs are the very bottom of the blocks. They are used to check if the block is touching the ground
     List<BlockScript> legs = new();
     public bool IsGrounded = false;
+    public float groundCheckDistance = 0.8f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,12 @@ public class SetScript : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-        AdjustBlockPositions();
+    
+    }
+
+    private void FixedUpdate() {
+        GroundCheck();
+        DEBUGDRAWGROUNDCHECK();
     }
 
     //Adding the child blocks into the blocks vector
@@ -85,7 +91,46 @@ public class SetScript : MonoBehaviour{
                 
             } 
         }
+
+        AdjustBlockPositions();
+        SetLegs();
     }
 
-    void GroundCheck() { }
+    public void SetLegs() {
+        legs.Clear();
+        float lowestYPos = 0.0f;
+        foreach(BlockScript b in blocks) {
+            if(b.transform.localPosition.y < lowestYPos) {
+                legs.Clear();
+                legs.Add(b);
+            }
+
+            if(b.transform.localPosition.y == lowestYPos) {
+                legs.Add(b);
+            }
+        }
+    }
+
+    //Ground check checks for objects with the tag "floor"
+    void GroundCheck() {
+        IsGrounded = false;
+        foreach (BlockScript b in legs) {
+            RaycastHit2D[] hit = Physics2D.RaycastAll(b.transform.position - new Vector3(0.0f, b.w/2 + 0.0001f, 0.0f), Vector2.down, groundCheckDistance);
+            
+            foreach(RaycastHit2D h in hit) {
+                if(h.collider.gameObject.tag == "floor" || h.collider.gameObject.tag == "block") {
+                    //Debug.Log(string.Format("Y value:{0} Collided at: {1}", b.transform.position.y, h.collider.gameObject.transform.position));
+                    Debug.Log("Touched a floor");
+                    IsGrounded = true;
+                    return;
+                }
+            }
+        }
+    }
+
+    void DEBUGDRAWGROUNDCHECK() {
+        foreach (BlockScript b in legs) {
+            Debug.DrawRay(b.transform.position - new Vector3(0.0f, b.w / 2 + 0.0001f, 0.0f), Vector2.down * groundCheckDistance, Color.magenta);
+        }
+    }
 }

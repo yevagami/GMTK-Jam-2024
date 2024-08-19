@@ -37,11 +37,7 @@ public class BlockScript : MonoBehaviour {
         }
     }
 
-    [Header("")]
-    //Position in the set array
-    public int x;
-    public int y;
-    
+    [Header("")]    
     //A dictionary of connections
     public Dictionary<string, BlockScript> connections = new Dictionary<string, BlockScript>();
 
@@ -80,7 +76,7 @@ public class BlockScript : MonoBehaviour {
         connections.TryGetValue("right", out foundConnections);
         DEBUGCONNECTIONS[3] = foundConnections;
 
-        DRAWCONNECTIONS();
+        //DRAWCONNECTIONS();
     }
 
 

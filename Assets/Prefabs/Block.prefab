@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6808272945442105738}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,11 +143,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ea0c95ff2fa6c4a8e58e5ec80b2c47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  up: {fileID: 0}
-  down: {fileID: 0}
-  left: {fileID: 0}
-  right: {fileID: 0}
+  DEBUGCONNECTIONS:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   w: 0.32
   h: 0.32

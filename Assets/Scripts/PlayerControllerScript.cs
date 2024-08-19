@@ -16,6 +16,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     //Movement
     public float moveSpeed;
+    public float jumpSpeed;
 
     //Pawn possesion
     GameObject currentPawn;
@@ -87,13 +88,11 @@ public class PlayerControllerScript : MonoBehaviour
                 
                 break;
 
-
             case states.SelectDetach:
                 if (selectDetachInput == null) {
                     selectDetachInput = StartCoroutine(SelectDetachInputCoroutine());
                 }
                 break;
-
 
             case states.Detach:
                 DetachEnd();
@@ -109,18 +108,30 @@ public class PlayerControllerScript : MonoBehaviour
 
         switch (currentState) {
             case states.Move:
-                if (currentPawn != null) {
-                    currentPawnRB.velocity = moveInput * moveSpeed;
+                if (currentPawn != null && moveInput.magnitude > 0.0f) {         
+                    currentPawnRB.velocity = new Vector2(moveInput.x * moveSpeed, 0.0f);
                 }
+
+                if (currentSet.IsGrounded) {
+                    currentPawnRB.velocity += new Vector2(0.0f, moveInput.y * jumpSpeed);
+                }
+
                 break;
         }
     }
 
     public void Possess(GameObject newPawn) { 
         if(newPawn == null) { return; }
-        currentPawnRB = newPawn.GetComponent<Rigidbody2D>();     
-        if(currentPawnRB == null) {
+        currentPawnRB = newPawn.GetComponent<Rigidbody2D>();
+        currentSet = newPawn.GetComponent<SetScript>();
+
+        if (currentPawnRB == null) {
             Debug.Log("Cannot possess an object without a rigidBody component");
+            return;
+        }
+
+        if (currentSet == null) {
+            Debug.Log("Cannot possess an object without a SetScript Component");
             return;
         }
         currentPawn = newPawn;
@@ -135,8 +146,6 @@ public class PlayerControllerScript : MonoBehaviour
     }
 
     void SelectPivotInit() {
-        currentSet = currentPawn.GetComponent<SetScript>();
-
         if (currentSet == null) {
             currentState = states.Move;
             Debug.Log("Pawn is not a set");
@@ -370,15 +379,21 @@ public class PlayerControllerScript : MonoBehaviour
         }
 
         //Removing the blocks from the old set
+        //Flag which ones to delete
         for(int i = 0; i < currentSet.blocks.Count; i++) {
             if (selectedBlocksToDetach.ContainsKey(currentSet.blocks[i])) {
                 currentSet.blocks.RemoveAt(i);
+                i--;
             }
         }
+
 
         //Cleanup
         currentSet.AdjustBlockPositions();
         newSet.AdjustBlockPositions();
+        currentSet.SetLegs();
+        newSet.SetLegs();
+
         detachHead.GetComponent<SpriteRenderer>().color = Color.white;
         detachHead = null;
         currentPivot = null;
