@@ -17,6 +17,10 @@ public class GameInstanceScript : MonoBehaviour
     public AudioClip Jump;
     public AudioClip SplitSelect;
     public AudioClip Split;
+    public AudioClip victory;
+
+    public AudioClip bgm1;
+    public AudioClip bgm2;
 
     private static GameInstanceScript instance = null;
 
@@ -48,5 +52,13 @@ public class GameInstanceScript : MonoBehaviour
 
     public void PlaySplitSoundEffect() {
         sfx.PlayOneShot(Split);
+    }
+
+    public void PlayLevelMusic() {
+
+    }
+
+    public void PlayMenuMusic() {
+
     }
 }

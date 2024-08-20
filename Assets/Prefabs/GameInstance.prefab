@@ -53,6 +53,9 @@ MonoBehaviour:
   Jump: {fileID: 8300000, guid: d8bc26995a9fc154ca75e1550c57ab1b, type: 3}
   SplitSelect: {fileID: 8300000, guid: 1e3a09b9426367e4abdfa24dc4a36d39, type: 3}
   Split: {fileID: 8300000, guid: 487f05a82ac1521409fb8e6bc7a7edbe, type: 3}
+  victory: {fileID: 8300000, guid: a11d440326f47aa40868bc95c8b1b2be, type: 3}
+  bgm1: {fileID: 8300000, guid: 87a7fae75b501e4448e117d08a8df3cd, type: 3}
+  bgm2: {fileID: 8300000, guid: 1780738d4efb3b6428fe9d5464ccd2e9, type: 3}
 --- !u!82 &8247229734079716999
 AudioSource:
   m_ObjectHideFlags: 0
@@ -63,7 +66,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1780738d4efb3b6428fe9d5464ccd2e9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 87a7fae75b501e4448e117d08a8df3cd, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
