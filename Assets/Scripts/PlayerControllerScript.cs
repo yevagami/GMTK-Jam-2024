@@ -71,7 +71,7 @@ public class PlayerControllerScript : MonoBehaviour
     // Update is called once per frame
     void Update(){
         moveInput.x = Input.GetAxisRaw("Horizontal");
-        moveInput.y = Input.GetAxisRaw("Vertical");
+        moveInput.y = (Input.GetKey(KeyCode.Space)) ? 1.0f : 0.0f;
 
 
         //J Inputs       
