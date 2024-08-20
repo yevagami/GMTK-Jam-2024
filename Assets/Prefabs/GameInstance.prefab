@@ -48,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SFXVolume: 1
   musicVolume: 1
-  bgm: {fileID: 1912202524504124753}
-  sfx: {fileID: 0}
+  bgm: {fileID: 8247229734079716999}
+  sfx: {fileID: 1912202524504124753}
   Jump: {fileID: 8300000, guid: d8bc26995a9fc154ca75e1550c57ab1b, type: 3}
   SplitSelect: {fileID: 8300000, guid: 1e3a09b9426367e4abdfa24dc4a36d39, type: 3}
   Split: {fileID: 8300000, guid: 487f05a82ac1521409fb8e6bc7a7edbe, type: 3}
