@@ -10,9 +10,10 @@ public class AudioMenu : MonoBehaviour
     public Slider sfxSlider;
     GameInstanceScript gameInstance;
 
-
     private void Awake() {
         gameInstance = GameObject.FindGameObjectWithTag("gameInstance").GetComponent<GameInstanceScript>();
+        musicSlider.value = gameInstance.musicVolume;
+        sfxSlider.value = gameInstance.SFXVolume;
     }
 
     private void Update() {

@@ -15,10 +15,17 @@ public class GameInstanceScript : MonoBehaviour
     public AudioClip SplitSelect;
     public AudioClip Split;
 
+    private static GameInstanceScript instance = null;
+
     // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
+        if(GameInstanceScript.instance == null) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame
