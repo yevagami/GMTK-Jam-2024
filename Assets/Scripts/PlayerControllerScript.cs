@@ -52,11 +52,15 @@ public class PlayerControllerScript : MonoBehaviour
     Coroutine selectDetachInput = null;
     BlockScript detachHead = null;
 
-
     //Move info
     public GameObject moveInfo;
     public TextMeshProUGUI rmbInfo;
 
+    //Pause Menu
+    [Header("Pause Menu")]
+    public GameObject pauseMenu;
+    public bool gamePaused = false;
+    GameInstanceScript gameInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -73,10 +77,15 @@ public class PlayerControllerScript : MonoBehaviour
 
         //Adding the default pawn to the level
         levelManager.setsInLevel.Add(defaultPawn.GetComponent<SetScript>());
+
+        //Getting the game instance
+        gameInstance = GameObject.FindGameObjectWithTag("gameInstance").GetComponent<GameInstanceScript>();
     }
 
     // Update is called once per frame
     void Update(){
+        if (gamePaused) { return; }
+
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = (Input.GetKey(KeyCode.Space)) ? 1.0f : 0.0f;
 
@@ -114,15 +123,16 @@ public class PlayerControllerScript : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyUp(KeyCode.P)) {
+            Debug.Log("PAUSE MENU");
+            if(pauseMenu != null) {
+                OpenPauseMenu();
+            }
+        }
 
         //Mouse input
         //Left Mouse
         if (Input.GetMouseButtonUp(0)) {
-
-            if (moveInfo != null) {
-                moveInfo.SetActive(false);
-            }
-
             SelectBlocksToDetach();
         }
 
@@ -167,6 +177,8 @@ public class PlayerControllerScript : MonoBehaviour
 
     //Physics related stuff
     private void FixedUpdate() {
+        if (gamePaused) { return; }
+
         //playerCamera.transform.position = Vector3.SmoothDamp(playerCamera.transform.position, currentPawn.transform.position, ref cameraMoveSpeed, cameraDampTime);
 
 
@@ -504,6 +516,11 @@ public class PlayerControllerScript : MonoBehaviour
 
         //If it's the current controled pawn
         if (hit.collider.transform.parent.gameObject == currentPawn) {
+            //Hiding the move info
+            if (moveInfo != null) {
+                moveInfo.SetActive(false);
+            }
+
             BlockScript selectedBlock = hit.collider.gameObject.GetComponent<BlockScript>();    
             if(selectedBlock == null) { return; }
 
@@ -524,5 +541,11 @@ public class PlayerControllerScript : MonoBehaviour
                 hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
             }
         }        
+    }
+
+    public void OpenPauseMenu() {
+        gamePaused = true;
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0;
     }
 }
