@@ -10,7 +10,7 @@ public class FlashingMessageScript : MonoBehaviour
     }
 
     IEnumerator DestroyCoroutine() {
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + 1.0f);
         Destroy(gameObject);
     }
 }
