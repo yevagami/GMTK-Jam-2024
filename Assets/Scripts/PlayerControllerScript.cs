@@ -75,29 +75,30 @@ public class PlayerControllerScript : MonoBehaviour
 
 
         //J Inputs       
-        if(Input.GetKeyUp(KeyCode.J)) {
-            switch (currentState) {
-                case states.Move:
-                    currentState = states.SelectPivot;
-                    SelectPivotInit();
-                    Debug.Log("Selecting Pivot");
-                    break;
+        //if(Input.GetKeyUp(KeyCode.J)) {
+        //    switch (currentState) {
+        //        case states.Move:
+        //            currentState = states.SelectPivot;
+        //            SelectPivotInit();
+        //            Debug.Log("Selecting Pivot");
+        //            break;
 
-                case states.SelectPivot:
-                    currentState = states.SelectDetach;
-                    DetachInit();
-                    Debug.Log("Pivot confirmed, select blocks");
-                    break;
+        //        case states.SelectPivot:
+        //            currentState = states.SelectDetach;
+        //            DetachInit();
+        //            Debug.Log("Pivot confirmed, select blocks");
+        //            break;
 
-                case states.Detach:
-                    Debug.Log("Detached");
-                    break;
+        //        case states.Detach:
+        //            Debug.Log("Detached");
+        //            break;
 
-                case states.SelectDetach:
-                    currentState = states.Detach;
-                    break;
-            }
-        }
+        //        case states.SelectDetach:
+        //            currentState = states.Detach;
+        //            break;
+        //    }
+        //}
+
 
         //R inputs
         if (Input.GetKeyUp(KeyCode.R)) {
@@ -106,25 +107,37 @@ public class PlayerControllerScript : MonoBehaviour
             }
         }
 
+
         //Mouse input
+        //Left Mouse
+        if (Input.GetMouseButtonUp(0)) {
+            SelectBlocksToDetach();
+        }
+
+        //Right Mouse
         if(Input.GetMouseButtonUp(1)) {
-            SelectSet();
+            if(currentState == states.Move) { 
+                SelectSet(); 
+            }
+            if(currentState == states.SelectDetach) {
+                currentState = states.Detach;
+            }
         }
 
         //States update
         switch (currentState) {
-            case states.SelectPivot:
-                if(selectPivotInput == null) {
-                    selectPivotInput = StartCoroutine(SelectPivotInputCoroutine());
-                }
+            //case states.SelectPivot:
+            //    if(selectPivotInput == null) {
+            //        selectPivotInput = StartCoroutine(SelectPivotInputCoroutine());
+            //    }
                 
-                break;
+            //    break;
 
-            case states.SelectDetach:
-                if (selectDetachInput == null) {
-                    selectDetachInput = StartCoroutine(SelectDetachInputCoroutine());
-                }
-                break;
+            //case states.SelectDetach:
+            //    if (selectDetachInput == null) {
+            //        selectDetachInput = StartCoroutine(SelectDetachInputCoroutine());
+            //    }
+            //    break;
 
             case states.Detach:
                 DetachEnd();
@@ -430,7 +443,6 @@ public class PlayerControllerScript : MonoBehaviour
         newSet.SetLegs();
         if (levelManager != null) { levelManager.setsInLevel.Add(newSet); }
 
-        detachHead.GetComponent<SpriteRenderer>().color = Color.white;
         detachHead = null;
         currentPivot = null;
         currentSet = null;
@@ -456,5 +468,38 @@ public class PlayerControllerScript : MonoBehaviour
                 Possess(parentSet.gameObject);
             }
         }
+    }
+
+
+    void SelectBlocksToDetach() {
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 mouseWorldPoint = playerCamera.ScreenToWorldPoint(mousePos);
+        RaycastHit2D hit = Physics2D.Raycast(mouseWorldPoint, Vector2.zero);
+
+        if (hit.collider == null) { return; }
+        if (hit.collider.gameObject.tag != "block") { return;}
+
+        //If it's the current controled pawn
+        if (hit.collider.transform.parent.gameObject == currentPawn) {
+            BlockScript selectedBlock = hit.collider.gameObject.GetComponent<BlockScript>();    
+            if(selectedBlock == null) { return; }
+
+            if(currentState != states.SelectDetach) {
+                currentState = states.SelectDetach;
+            }
+
+            if (selectedBlocksToDetach.ContainsKey(selectedBlock)) {
+                hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                selectedBlocksToDetach.Remove(selectedBlock);
+                if(selectedBlocksToDetach.Count <= 0) {
+                    currentState = states.Move;
+                }
+            } 
+            
+            else {
+                selectedBlocksToDetach.Add(selectedBlock, selectedBlock);
+                hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }        
     }
 }
