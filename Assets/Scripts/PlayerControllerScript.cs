@@ -21,8 +21,11 @@ public class PlayerControllerScript : MonoBehaviour
 
     //Movement
     [Header("Movement")]
-    public float moveSpeed;
-    public float jumpSpeed;
+    public float baseMoveSpeed;
+    public float moveSpeedPerBlockMultiplier = 1.0f;
+    public float baseJumpSpeed;
+    public float jumpSpeedPerBlockMultiplier = 1.0f;
+
 
     //Pawn possesion
     [Header("Pawn")]
@@ -135,13 +138,18 @@ public class PlayerControllerScript : MonoBehaviour
     private void FixedUpdate() {
         //playerCamera.transform.position = Vector3.SmoothDamp(playerCamera.transform.position, currentPawn.transform.position, ref cameraMoveSpeed, cameraDampTime);
 
+
         switch (currentState) {
             case states.Move:
-                if (currentPawn != null && moveInput.magnitude > 0.0f) {         
+                if (currentPawn != null && moveInput.magnitude > 0.0f) {
+                    float moveSpeed = baseMoveSpeed - (moveSpeedPerBlockMultiplier * currentSet.blocks.Count);
+                    moveSpeed = (moveSpeed <= 0.0f) ? 0.01f : moveSpeed;
                     currentPawnRB.velocity = new Vector2(moveInput.x * moveSpeed, currentPawnRB.velocity.y);
                 }
 
                 if (currentSet.IsGrounded) {
+                    float jumpSpeed = baseJumpSpeed - (jumpSpeedPerBlockMultiplier * currentSet.blocks.Count);
+                    jumpSpeed = (jumpSpeed <= 0.0f) ? 0.01f : jumpSpeed;
                     currentPawnRB.velocity += new Vector2(0.0f, moveInput.y * jumpSpeed);
                 }
 
