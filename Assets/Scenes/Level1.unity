@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 302503742736567331, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2259529263766767613, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
       propertyPath: defaultPawn
       value: 
