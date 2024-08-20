@@ -52,4 +52,15 @@ public class LevelManager : MonoBehaviour{
 
         SceneManager.LoadScene(NextLevel);
     }
+
+    public void ExitGame() {
+        StartCoroutine(ExitCoroutine());
+    }
+
+    IEnumerator ExitCoroutine() {
+        BlackScreenTransition.Play("BlackScreenFadeOut");
+        yield return new WaitForSeconds(BlackScreenTransition.GetCurrentAnimatorStateInfo(0).length);
+
+        SceneManager.LoadScene("MainMenuScene");
+    }
 }

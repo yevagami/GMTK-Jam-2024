@@ -139,10 +139,6 @@ PrefabInstance:
       value: Level 2
       objectReference: {fileID: 0}
     - target: {fileID: 2259529263766767613, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
-      propertyPath: pauseMenu
-      value: 
-      objectReference: {fileID: 1533932664}
-    - target: {fileID: 2259529263766767613, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
       propertyPath: defaultPawn
       value: 
       objectReference: {fileID: 904818401}
@@ -190,10 +186,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8512263077955227099, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
-      propertyPath: AudioMenu
-      value: 
-      objectReference: {fileID: 1416268938}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -471,11 +463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9a809a933e5d24d996a07edbfa79f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1416268938 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8973574894471156748, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
-  m_PrefabInstance: {fileID: 495939941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1466303666 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5791408656918156374, guid: d72da8a44d4e0334f911edaa3e81a85c, type: 3}
@@ -548,11 +535,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef90835f448edd041bd787a2cd6fbadb, type: 3}
---- !u!1 &1533932664 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3491002860556483879, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
-  m_PrefabInstance: {fileID: 495939941}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2092672144
 PrefabInstance:
   m_ObjectHideFlags: 0

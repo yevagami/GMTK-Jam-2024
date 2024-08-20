@@ -33,13 +33,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ExitGame() {
-        StartCoroutine(ExitCoroutine());
+        levelManager.ExitGame();
     }
 
-    IEnumerator ExitCoroutine() {
-        levelManager.BlackScreenTransition.Play("BlackScreenFadeOut");
-        yield return new WaitForSeconds(levelManager.BlackScreenTransition.GetCurrentAnimatorStateInfo(0).length);
-
-        SceneManager.LoadScene("MainMenuScene");
-    }
 }
