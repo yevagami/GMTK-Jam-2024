@@ -9,17 +9,43 @@ public class ButtonTriggerScript : MonoBehaviour
     public LevelManager levelManager;
 
     [Header("Object To Trigger")]
-    public TriggerScriptInterfae triggerScript;
+    public TriggerScriptInterface triggerScript;
+
+    [Header("")]
+    public int activationAmount = 1;
+    bool isActivated = false;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    private void Start() {
+        if (levelManager == null) {
+            levelManager = GameObject.FindGameObjectWithTag("levelManager").GetComponent<LevelManager>();
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if(isActivated) {
+            triggerScript.Activate();
+        } else {
+            triggerScript.Deactivate(); 
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (levelManager == null) {
+            return;
+        }
+
+        if (collision.gameObject.tag == "block") {
+            SetScript set = collision.gameObject.transform.parent.gameObject.GetComponent<SetScript>();
+            if (set == null) {
+                return;
+            }
+
+            if(set.blocks.Count >= activationAmount) {
+                isActivated = true;
+            }
+        }
     }
 }

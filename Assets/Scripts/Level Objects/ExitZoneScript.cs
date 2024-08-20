@@ -29,13 +29,21 @@ public class ExitZoneScript : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        SetScript set = collision.gameObject.transform.parent.gameObject.GetComponent<SetScript>();
-        if (set != null) { 
-            if(!setsInExitZone.ContainsKey(set)) {
+        if (levelManager == null) {
+            return;
+        }
+
+        if (collision.gameObject.tag == "block") {
+            SetScript set = collision.gameObject.transform.parent.gameObject.GetComponent<SetScript>();
+            if (set == null) {
+                return;   
+            }
+
+            if (!setsInExitZone.ContainsKey(set)) {
                 setsInExitZone.Add(set, 0);
             }
         }
-
+            
         ExitCheck();
         Debug.Log(exitValid);
     }
