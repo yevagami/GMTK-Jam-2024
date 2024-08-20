@@ -33,6 +33,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ExitGame() {
+        ClosePauseMenu();
         levelManager.ExitGame();
     }
 

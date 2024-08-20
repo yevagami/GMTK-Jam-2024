@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour{
         StartCoroutine(ExitCoroutine());
     }
 
-    IEnumerator ExitCoroutine() {
+    IEnumerator ExitCoroutine() {        
         BlackScreenTransition.Play("BlackScreenFadeOut");
         yield return new WaitForSeconds(BlackScreenTransition.GetCurrentAnimatorStateInfo(0).length);
 
