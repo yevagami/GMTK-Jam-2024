@@ -5,10 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject BlackScreen;
     public string startSceneName;
+
     public void StartButton() {
-        SceneManager.LoadScene(startSceneName);
+        BlackScreen.GetComponent<Animator>().Play("BlackScreenFadeOut");
+        StartCoroutine(TransitionLevel());
         
+    }
+
+    IEnumerator TransitionLevel() {
+        yield return new WaitForSeconds(BlackScreen.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+        SceneManager.LoadScene(startSceneName);
     }
 
     // Start is called before the first frame update

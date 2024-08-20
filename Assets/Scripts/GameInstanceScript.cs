@@ -10,6 +10,9 @@ public class GameInstanceScript : MonoBehaviour
 
     [Header("Audio Source")]
     public AudioSource bgm;
+    public AudioClip Jump;
+    public AudioClip SplitSelect;
+    public AudioClip Split;
 
     // Start is called before the first frame update
     void Start()
