@@ -134,6 +134,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 640474260248982408, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
+      propertyPath: exitZone
+      value: 
+      objectReference: {fileID: 1466303666}
+    - target: {fileID: 640474260248982408, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
+      propertyPath: NextLevel
+      value: Level 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640277189268362150, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2259529263766767613, guid: e9cff3f8c3e055944a7d9a375637ab12, type: 3}
       propertyPath: defaultPawn
       value: 
@@ -388,6 +400,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e9a809a933e5d24d996a07edbfa79f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1466303666 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5791408656918156374, guid: d72da8a44d4e0334f911edaa3e81a85c, type: 3}
+  m_PrefabInstance: {fileID: 1355655218}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335816d5a8cad4a4aa77bc2e3fde555f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1507722526

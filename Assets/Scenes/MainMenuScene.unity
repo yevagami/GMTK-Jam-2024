@@ -602,7 +602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BlackScreen: {fileID: 1617617766}
-  startSceneName: Level1
+  startSceneName: Level 1
   AudioSettingsPanel: {fileID: 1099872668}
 --- !u!1 &638223291
 GameObject:

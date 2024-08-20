@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour{
     public List<SetScript> setsInLevel = new List<SetScript>();
 
     [Header("Level Transition")]
+    public ExitZoneScript exitZone; 
     public string NextLevel = "";
     public Animator BlackScreenTransition;
     public GameObject levelCompleteMessagePrefab;
@@ -21,10 +22,12 @@ public class LevelManager : MonoBehaviour{
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(LevelTransitionCoroutine == null) {
-            LevelTransitionCoroutine = StartCoroutine(LevelCompleteTransition());
+        if(exitZone != null) {
+            if(exitZone.exitValid) {
+                LevelComplete();
+            }
         }
     }
 
@@ -33,7 +36,9 @@ public class LevelManager : MonoBehaviour{
     }
 
     public void LevelComplete() {
-
+        if(LevelTransitionCoroutine == null) {
+            LevelTransitionCoroutine = StartCoroutine(LevelCompleteTransition());
+        }
     }
 
     IEnumerator LevelCompleteTransition() {
@@ -44,6 +49,7 @@ public class LevelManager : MonoBehaviour{
 
         BlackScreenTransition.Play("BlackScreenFadeOut");
         yield return new WaitForSeconds(BlackScreenTransition.GetCurrentAnimatorStateInfo(0).length);
-        Debug.Log("NEXT LEVEL");
+
+        SceneManager.LoadScene(NextLevel);
     }
 }
