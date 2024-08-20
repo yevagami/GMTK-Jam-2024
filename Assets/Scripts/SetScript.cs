@@ -26,11 +26,10 @@ public class SetScript : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-    
+        GroundCheck();
     }
 
     private void FixedUpdate() {
-        GroundCheck();
         DEBUGDRAWGROUNDCHECK();
     }
 

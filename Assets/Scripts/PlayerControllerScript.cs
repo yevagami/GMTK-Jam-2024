@@ -186,7 +186,7 @@ public class PlayerControllerScript : MonoBehaviour
                 if (currentSet.IsGrounded) {
                     float jumpSpeed = baseJumpSpeed - (jumpSpeedPerBlockMultiplier * currentSet.blocks.Count);
                     jumpSpeed = (jumpSpeed <= 0.0f) ? 0.01f : jumpSpeed;
-                    currentPawnRB.velocity += new Vector2(0.0f, moveInput.y * jumpSpeed);
+                    currentPawnRB.velocity = new Vector2(currentPawnRB.velocity.x, moveInput.y * jumpSpeed);
                 }
 
                 break;
