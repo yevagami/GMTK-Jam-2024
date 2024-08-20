@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
+    public PlayerControllerScript playerControllerScript;
     public GameObject AudioMenu;
     public LevelManager levelManager;
 
@@ -28,8 +29,9 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void ClosePauseMenu() {
-        gameObject.SetActive(false);
         Time.timeScale = 1;
+        playerControllerScript.gamePaused = false;
+        gameObject.SetActive(false);
     }
 
     public void ExitGame() {

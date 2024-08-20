@@ -11,6 +11,9 @@ public class GameInstanceScript : MonoBehaviour
 
     [Header("Audio Source")]
     public AudioSource bgm;
+    public AudioSource sfx;
+
+    [Header("Audio Clips")]
     public AudioClip Jump;
     public AudioClip SplitSelect;
     public AudioClip Split;
@@ -31,6 +34,19 @@ public class GameInstanceScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        bgm.volume = musicVolume;
+        sfx.volume = SFXVolume;
+    }
+
+    public void PlayJumpSoundEffect() {
+        sfx.PlayOneShot(Jump);
+    }
+
+    public void PlaySplitSelectSoundEffect() {
+        sfx.PlayOneShot(SplitSelect);
+    }
+
+    public void PlaySplitSoundEffect() {
+        sfx.PlayOneShot(Split);
     }
 }

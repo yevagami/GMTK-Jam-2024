@@ -86,7 +86,7 @@ public class PlayerControllerScript : MonoBehaviour
     void Update(){
         if (gamePaused) { return; }
 
-        moveInput.x = Input.GetAxisRaw("Horizontal");
+        moveInput.x = Input.GetAxis("Horizontal");
         moveInput.y = (Input.GetKey(KeyCode.Space)) ? 1.0f : 0.0f;
 
 
@@ -134,6 +134,9 @@ public class PlayerControllerScript : MonoBehaviour
         //Left Mouse
         if (Input.GetMouseButtonUp(0)) {
             SelectBlocksToDetach();
+            if(gameInstance != null) {
+                gameInstance.PlaySplitSelectSoundEffect();
+            }
         }
 
         //Right Mouse
@@ -143,6 +146,10 @@ public class PlayerControllerScript : MonoBehaviour
             }
             if(currentState == states.SelectDetach) {
                 currentState = states.Detach;
+
+                if (gameInstance != null) {
+                    gameInstance.PlaySplitSoundEffect();
+                }
             }
         }
 
@@ -196,6 +203,11 @@ public class PlayerControllerScript : MonoBehaviour
                 }
 
                 if (currentSet.IsGrounded) {
+                    if(moveInput.y != 0.0f) {
+                        if (gameInstance != null) {
+                            gameInstance.PlayJumpSoundEffect();
+                        }
+                    }
                     float jumpSpeed = baseJumpSpeed - (jumpSpeedPerBlockMultiplier * currentSet.blocks.Count);
                     jumpSpeed = (jumpSpeed <= 0.0f) ? 0.01f : jumpSpeed;
                     currentPawnRB.velocity = new Vector2(currentPawnRB.velocity.x, moveInput.y * jumpSpeed);
