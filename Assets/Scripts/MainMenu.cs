@@ -16,7 +16,9 @@ public class MainMenu : MonoBehaviour
     }
 
     IEnumerator TransitionLevel() {
-        gameInstance.PlayLevelMusic();
+        if(gameInstance != null) {
+            gameInstance.PlayLevelMusic();
+        }
         yield return new WaitForSeconds(BlackScreen.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         SceneManager.LoadScene(startSceneName);
     }
@@ -25,7 +27,9 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         gameInstance = GameObject.FindGameObjectWithTag("gameInstance").GetComponent<GameInstanceScript>();
-        gameInstance.PlayMenuMusic();
+        if (gameInstance != null) {
+            gameInstance.PlayMenuMusic();
+        }
     }
 
     // Update is called once per frame

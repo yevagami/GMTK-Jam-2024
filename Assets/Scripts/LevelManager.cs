@@ -43,7 +43,9 @@ public class LevelManager : MonoBehaviour{
     }
 
     IEnumerator LevelCompleteTransition() {
-        gameInstance.PlayVictorySoundEffect();
+        if(gameInstance != null) {
+            gameInstance.PlayVictorySoundEffect();
+        }
 
         GameObject msg = Instantiate(levelCompleteMessagePrefab, Vector3.zero, Quaternion.identity, UICanvas.transform);
         if (msg != null) {
