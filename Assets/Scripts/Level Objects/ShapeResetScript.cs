@@ -8,8 +8,8 @@ public class ShapeResetScript : MonoBehaviour{
     public LevelManager levelManager;
 
     //Respawning Position
-    [Header("Respawn Position")]
-    public GameObject respawnPos;
+    [Header("Respawn Position Relatieve to the reset zone")]
+    public Vector3 respawnPos;
     
     // Start is called before the first frame update
     void Start()
@@ -34,15 +34,21 @@ public class ShapeResetScript : MonoBehaviour{
                 return;
             }
 
-            foreach(SetScript s in levelManager.setsInLevel) {
-                if(s != set) {
-                    Destroy(s.gameObject);
+            for(int i = 0; i < levelManager.setsInLevel.Count; i++) {
+                if (levelManager.setsInLevel[i] != set) {
+                    Destroy(levelManager.setsInLevel[i].gameObject);
+                    levelManager.setsInLevel.RemoveAt(i);
+                    i--;
                 }
             }
-
+            set.transform.position = transform.position + respawnPos;
             set.DeleteBlocks();
+
             set.GenerateSet(3, 3);
-            set.transform.position = respawnPos.transform.position;
+            //set.transform.position = transform.position + respawnPos;
+
+            Debug.Log(transform.position + respawnPos);
+            Debug.Log(set.transform.position);
         }
     }
 }

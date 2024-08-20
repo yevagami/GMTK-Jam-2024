@@ -59,8 +59,6 @@ public class SetScript : MonoBehaviour{
                 //Because the block.directions[connection.key] is invalid
                 if (connection.Value == null) { continue; }
                 connection.Value.transform.position = block.transform.position + (block.directions[connection.Key] * (block.h / 2 + spaceBetweenBlocks));
-                
-                
             }
         }
     }
@@ -76,6 +74,7 @@ public class SetScript : MonoBehaviour{
             for(int i = 0; i < width; i++) {
                 BlockScript newBlock = Instantiate(blockPrefab).GetComponent<BlockScript>();
                 newBlock.transform.parent = transform;
+                newBlock.transform.localPosition = Vector3.zero;
                 newBlock.gameObject.name = string.Format("{0} {1}", "Block", i + j * width);
 
                 blocks.Add(newBlock);
