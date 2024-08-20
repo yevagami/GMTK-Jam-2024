@@ -1647,10 +1647,10 @@ MonoBehaviour:
   levelManager: {fileID: 0}
   playerCamera: {fileID: 0}
   cameraDampTime: 0.1
-  baseMoveSpeed: 2
-  moveSpeedPerBlockMultiplier: 0.08
-  baseJumpSpeed: 2
-  jumpSpeedPerBlockMultiplier: 0.08
+  baseMoveSpeed: 4
+  moveSpeedPerBlockMultiplier: 0.12
+  baseJumpSpeed: 6.5
+  jumpSpeedPerBlockMultiplier: 0.21
   defaultPawn: {fileID: 0}
   inputDelayTime: 0.08
   setPrefab: {fileID: 5352526263116408235, guid: 55a4493ad69896f4c96aa4fc10011cdf, type: 3}

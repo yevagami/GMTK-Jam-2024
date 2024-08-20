@@ -46,7 +46,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 3
-  m_LinearDrag: 0.35
+  m_LinearDrag: 0.7
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocks: []
-  spaceBetweenBlocks: 0.3
+  spaceBetweenBlocks: 0.35
   blockPrefab: {fileID: 5537081442561300023, guid: d227da356275a7c43820f3f35154089e, type: 3}
   generateNewSet: 0
   IsGrounded: 0
