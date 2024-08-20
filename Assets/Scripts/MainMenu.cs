@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public GameObject BlackScreen;
     public string startSceneName;
     public GameObject AudioSettingsPanel;
+    public GameInstanceScript gameInstance;
 
     public void StartButton() {
         BlackScreen.GetComponent<Animator>().Play("BlackScreenFadeOut");
@@ -15,6 +16,7 @@ public class MainMenu : MonoBehaviour
     }
 
     IEnumerator TransitionLevel() {
+        gameInstance.PlayLevelMusic();
         yield return new WaitForSeconds(BlackScreen.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         SceneManager.LoadScene(startSceneName);
     }
@@ -22,7 +24,8 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameInstance = GameObject.FindGameObjectWithTag("gameInstance").GetComponent<GameInstanceScript>();
+        gameInstance.PlayMenuMusic();
     }
 
     // Update is called once per frame

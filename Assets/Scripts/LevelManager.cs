@@ -14,11 +14,12 @@ public class LevelManager : MonoBehaviour{
     public GameObject levelCompleteMessagePrefab;
     public GameObject UICanvas;
     Coroutine LevelTransitionCoroutine = null;
+    GameInstanceScript gameInstance;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameInstance = GameObject.FindGameObjectWithTag("gameInstance").GetComponent<GameInstanceScript>();
     }
 
     // Update is called once per frame
@@ -42,6 +43,8 @@ public class LevelManager : MonoBehaviour{
     }
 
     IEnumerator LevelCompleteTransition() {
+        gameInstance.PlayVictorySoundEffect();
+
         GameObject msg = Instantiate(levelCompleteMessagePrefab, Vector3.zero, Quaternion.identity, UICanvas.transform);
         if (msg != null) {
             yield return null;

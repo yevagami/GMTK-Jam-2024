@@ -54,11 +54,17 @@ public class GameInstanceScript : MonoBehaviour
         sfx.PlayOneShot(Split);
     }
 
-    public void PlayLevelMusic() {
+    public void PlayVictorySoundEffect() {
+        sfx.PlayOneShot(victory);
+    }
 
+    public void PlayLevelMusic() {
+        bgm.clip = bgm2;
+        bgm.Play();
     }
 
     public void PlayMenuMusic() {
-
+        bgm.clip = bgm1;
+        bgm.Play();
     }
 }

@@ -602,6 +602,7 @@ MonoBehaviour:
   BlackScreen: {fileID: 1617617766}
   startSceneName: Level 1
   AudioSettingsPanel: {fileID: 1099872668}
+  gameInstance: {fileID: 0}
 --- !u!1 &638223291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,7 +1187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2009500921279967571, guid: 3a41200c92529224cbce68b8286ff850, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5151739137609828396, guid: 3a41200c92529224cbce68b8286ff850, type: 3}
       propertyPath: m_Pivot.x
