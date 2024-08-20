@@ -8,8 +8,8 @@ public class ShapeResetScript : MonoBehaviour{
     public LevelManager levelManager;
 
     //Respawning Position
-    [Header("Respawn Position Relatieve to the reset zone")]
-    public Vector3 respawnPos;
+    [Header("Respawn Position")]
+    public GameObject respawnPos;
     
     // Start is called before the first frame update
     void Start()
@@ -41,14 +41,11 @@ public class ShapeResetScript : MonoBehaviour{
                     i--;
                 }
             }
-            set.transform.position = transform.position + respawnPos;
+            
+
             set.DeleteBlocks();
-
             set.GenerateSet(3, 3);
-            //set.transform.position = transform.position + respawnPos;
-
-            Debug.Log(transform.position + respawnPos);
-            Debug.Log(set.transform.position);
+            set.transform.position = respawnPos.transform.position;
         }
     }
 }
