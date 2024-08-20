@@ -231,7 +231,21 @@ public class PlayerControllerScript : MonoBehaviour
             Debug.Log("Cannot possess an object without a SetScript Component");
             return;
         }
+
         currentPawn = newPawn;
+
+        foreach(SetScript s in levelManager.setsInLevel) {
+            if(s != currentSet) {
+                foreach(BlockScript b in s.blocks) {
+                    b.GetComponent<SpriteRenderer>().color = Color.gray;
+                }
+                continue;
+            }
+
+            foreach(BlockScript b in s.blocks) {
+                b.GetComponent<SpriteRenderer>().color = Color.white;
+            }
+        }
     }
 
     //Moving the pivot
