@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
@@ -50,6 +51,12 @@ public class PlayerControllerScript : MonoBehaviour
     Dictionary<BlockScript, BlockScript> selectedBlocksToDetach = new Dictionary<BlockScript, BlockScript>();
     Coroutine selectDetachInput = null;
     BlockScript detachHead = null;
+
+
+    //Move info
+    public GameObject moveInfo;
+    public TextMeshProUGUI rmbInfo;
+
 
     // Start is called before the first frame update
     void Start()
@@ -111,6 +118,11 @@ public class PlayerControllerScript : MonoBehaviour
         //Mouse input
         //Left Mouse
         if (Input.GetMouseButtonUp(0)) {
+
+            if (moveInfo != null) {
+                moveInfo.SetActive(false);
+            }
+
             SelectBlocksToDetach();
         }
 
@@ -130,7 +142,7 @@ public class PlayerControllerScript : MonoBehaviour
             //    if(selectPivotInput == null) {
             //        selectPivotInput = StartCoroutine(SelectPivotInputCoroutine());
             //    }
-                
+
             //    break;
 
             //case states.SelectDetach:
@@ -138,9 +150,15 @@ public class PlayerControllerScript : MonoBehaviour
             //        selectDetachInput = StartCoroutine(SelectDetachInputCoroutine());
             //    }
             //    break;
+            case states.SelectDetach:
+                if(rmbInfo != null) {
+                    rmbInfo.text = "Confirm Split";
+                }
+                break;
 
             case states.Detach:
                 DetachEnd();
+                rmbInfo.text = "Select Group";
                 currentState = states.Move;
                 break;
         }
@@ -154,6 +172,11 @@ public class PlayerControllerScript : MonoBehaviour
 
         switch (currentState) {
             case states.Move:
+
+                if(moveInfo != null) {
+                    moveInfo.SetActive(true);
+                }
+
                 if (currentPawn != null && moveInput.magnitude > 0.0f) {
                     float moveSpeed = baseMoveSpeed - (moveSpeedPerBlockMultiplier * currentSet.blocks.Count);
                     moveSpeed = (moveSpeed <= 0.0f) ? 0.01f : moveSpeed;
