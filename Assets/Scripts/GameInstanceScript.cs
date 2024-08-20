@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameInstanceScript : MonoBehaviour
 {
+    [Header("Sound Slider")]
+    public Slider musicSlider;
+    public Slider sfxSlider;
+
     [Header("Sound")]
     public float SFXVolume = 1.0f;
     public float musicVolume = 1.0f;
@@ -25,6 +30,4 @@ public class GameInstanceScript : MonoBehaviour
     {
         
     }
-
-    
 }

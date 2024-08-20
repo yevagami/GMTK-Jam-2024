@@ -7,11 +7,11 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject BlackScreen;
     public string startSceneName;
+    public GameObject AudioSettingsPanel;
 
     public void StartButton() {
         BlackScreen.GetComponent<Animator>().Play("BlackScreenFadeOut");
         StartCoroutine(TransitionLevel());
-        
     }
 
     IEnumerator TransitionLevel() {
@@ -29,5 +29,13 @@ public class MainMenu : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void OpenAudioManager() {
+        AudioSettingsPanel.SetActive(true);
+    }
+
+    public void CloseAudioManager() {
+        AudioSettingsPanel.SetActive(false);
     }
 }
